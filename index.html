@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>X 影响力人物 Top 100</title>
+  <meta name="description" content="按公开粉丝数整理的 X 个人账号前 100 名，含简介、外链和个人主页。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,650&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f1ebe0;
+      --ink: #1a1612;
+      --muted: #5c534a;
+      --line: #d6ccbc;
+      --paper: #fffdf8;
+      --accent: #8f1a1a;
+      --accent-soft: #f3e4d4;
+      --gold: #c9922a;
+      --shadow: 0 1px 0 rgba(40, 28, 16, 0.04), 0 12px 36px rgba(40, 28, 16, 0.06);
+      --tap: 40px;
+      --radius-lg: 4px;
+      --radius-pill: 999px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #f7f2e8 0%, transparent 220px),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 31px,
+          rgba(120, 100, 70, 0.035) 31px,
+          rgba(120, 100, 70, 0.035) 32px
+        ),
+        var(--bg);
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: clip;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    .skip {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 20;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transform: translateY(-160%);
+    }
+    .skip:focus { transform: none; outline: 2px solid var(--accent); outline-offset: 2px; }
+    .wrap {
+      width: min(1100px, calc(100% - 28px));
+      margin: 0 auto;
+    }
+    header.top {
+      padding: 36px 0 4px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 4px;
+    }
+    .kicker {
+      margin: 0 0 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      font-family: Newsreader, "Songti SC", "Noto Serif SC", "STSong", serif;
+      font-weight: 650;
+      font-size: clamp(42px, 7vw, 78px);
+      letter-spacing: -0.035em;
+      line-height: 0.94;
+      max-width: 12ch;
+    }
+    .lede {
+      max-width: 62ch;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 28px;
+      margin: 20px 0 22px;
+      padding: 0;
+      list-style: none;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      font-size: 14.5px;
+    }
+    .stats li {
+      position: relative;
+      padding-left: 0;
+    }
+    .stats li + li::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      margin-right: 28px;
+      margin-left: -16px;
+      border-radius: 50%;
+      background: var(--line);
+      vertical-align: middle;
+    }
+    .stats strong { font-weight: 700; }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      margin-top: 18px;
+      padding: 10px 0 6px;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(12px);
+    }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      padding: 4px 5px 4px 16px;
+      box-shadow: 0 1px 0 rgba(40, 28, 16, 0.03);
+    }
+    .search:focus-within {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+    .search label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .search input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      min-height: 44px;
+      outline: none;
+      color: var(--ink);
+    }
+    .search input::placeholder { color: #8a8176; }
+    .search button {
+      border: 0;
+      background: var(--ink);
+      color: #fff;
+      min-height: var(--tap);
+      min-width: 64px;
+      padding: 0 18px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .search button:hover { background: #2a241e; }
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 0 4px;
+      margin: 0 -2px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: var(--radius-pill);
+      min-height: var(--tap);
+      padding: 0 15px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+    .chip:hover { border-color: #b8ad9c; }
+    .chip[aria-pressed="true"] {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .chip:focus-visible,
+    .search input:focus-visible,
+    .links a:focus-visible,
+    .search button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .status {
+      margin: 10px 0 0;
+      min-height: 1.4em;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .lead {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 16px;
+      margin: 14px 0 28px;
+      align-items: stretch;
+    }
+    .hero, .row {
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+    .hero {
+      border-radius: 6px;
+      padding: 22px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 0;
+      min-height: 100%;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .hero .rank {
+      font-size: clamp(40px, 4vw, 52px);
+      line-height: 0.9;
+      margin: 0;
+    }
+    .hero:first-child {
+      background: #1a1612;
+      color: #f6f1e7;
+      border-color: #1a1612;
+    }
+    .hero:first-child .sub,
+    .hero:first-child .bio { color: #cfc5b6; }
+    .rank {
+      font-family: Newsreader, "Songti SC", "Noto Serif SC", "STSong", serif;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+    }
+    .hero:first-child .rank { color: var(--gold); }
+    .avatar, .ph {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e7e0d4;
+      flex-shrink: 0;
+    }
+    .hero .avatar, .hero .ph {
+      width: 76px;
+      height: 76px;
+      border: 2px solid color-mix(in srgb, var(--line) 70%, transparent);
+    }
+    .hero:first-child .avatar,
+    .hero:first-child .ph {
+      border-color: #3a342c;
+      background: #2a241e;
+    }
+    .ph {
+      display: grid;
+      place-items: center;
+      font-family: Newsreader, "Songti SC", serif;
+      font-size: 28px;
+      color: var(--muted);
+    }
+    .hero-body {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    h2, h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .hero h2 {
+      font-size: clamp(20px, 2.2vw, 26px);
+      max-width: 100%;
+    }
+    .sub {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      overflow-wrap: anywhere;
+    }
+    .count {
+      margin: 12px 0 0;
+      font-family: Newsreader, "Songti SC", "Noto Serif SC", serif;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+      line-height: 1.1;
+    }
+    .bio {
+      margin: 10px 0 0;
+      color: #3a342c;
+      font-size: 14.5px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+    .hero .bio {
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .hero:first-child .tag { color: var(--gold); }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tap);
+      padding: 0 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+      text-decoration: none;
+      font-size: 13.5px;
+      line-height: 1;
+    }
+    .links a:hover {
+      background: var(--accent-soft);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    }
+    .hero:first-child .links a {
+      border-color: #6f675c;
+      color: #f6f1e7;
+    }
+    .hero:first-child .links a:hover {
+      background: #2a241e;
+      border-color: #a89f90;
+    }
+    .list {
+      display: grid;
+      gap: 0;
+      padding-bottom: 40px;
+      border-top: 1px solid var(--line);
+    }
+    .row {
+      border-radius: 0;
+      border-width: 0 0 1px;
+      border-style: solid;
+      border-color: var(--line);
+      background: transparent;
+      padding: 18px 4px;
+      display: grid;
+      grid-template-columns: 48px 56px minmax(0, 1fr) auto;
+      grid-template-areas:
+        "rank avatar main count"
+        "rank avatar actions count";
+      gap: 6px 16px;
+      align-items: start;
+      box-shadow: none;
+    }
+    .row:hover { background: color-mix(in srgb, var(--paper) 70%, transparent); }
+    .row .rank {
+      grid-area: rank;
+      font-size: 26px;
+      line-height: 1;
+      padding-top: 10px;
+      text-align: right;
+      width: 100%;
+    }
+    .row > .avatar, .row > .ph {
+      grid-area: avatar;
+      width: 56px;
+      height: 56px;
+      font-size: 20px;
+      margin-top: 2px;
+    }
+    .row h3 { font-size: 17.5px; }
+    .row > div, .hero > div { min-width: 0; }
+    .row .meta {
+      grid-area: main;
+      min-width: 0;
+    }
+    .row .count {
+      grid-area: count;
+      margin: 0;
+      font-size: 24px;
+      text-align: right;
+      white-space: nowrap;
+      padding-top: 8px;
+      color: var(--ink);
+      align-self: start;
+    }
+    .row .bio {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .row .tag { margin-top: 8px; }
+    .row > .links {
+      grid-area: actions;
+      margin-top: 4px;
+    }
+    .empty {
+      margin: 0;
+      padding: 56px 16px 72px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--paper) 65%, transparent);
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+    .empty strong {
+      display: block;
+      color: var(--ink);
+      font-family: Newsreader, "Songti SC", serif;
+      font-size: 28px;
+      font-weight: 650;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 48px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+    footer a {
+      color: var(--ink);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    footer a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .lead { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 24px; }
+      .hero .bio {
+        -webkit-line-clamp: 5;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: min(100% - 20px, 1100px); }
+      header.top { padding-top: 28px; }
+      h1 { max-width: none; font-size: clamp(36px, 11vw, 52px); }
+      .stats li + li::before { display: none; }
+      .row {
+        grid-template-columns: 36px 48px minmax(0, 1fr);
+        grid-template-areas:
+          "rank avatar main"
+          ".     .      count"
+          ".     .      actions";
+        gap: 8px 12px;
+        padding: 16px 0;
+      }
+      .row .rank {
+        font-size: 22px;
+        padding-top: 8px;
+        text-align: left;
+      }
+      .row > .avatar,
+      .row > .ph { width: 48px; height: 48px; }
+      .row .count {
+        text-align: left;
+        font-size: 22px;
+        padding-top: 2px;
+        white-space: normal;
+      }
+      .row > .links { margin-top: 2px; }
+      .row .bio { -webkit-line-clamp: 3; }
+      .links a {
+        min-height: var(--tap);
+        padding: 0 12px;
+      }
+      .search { padding-left: 14px; }
+      .search button { padding: 0 14px; }
+    }
+
+    @media (max-width: 420px) {
+      .hero { padding: 18px 16px 16px; }
+      .hero-top { margin-bottom: 12px; }
+      .avatar, .ph, .hero .avatar, .hero .ph {
+        width: 64px;
+        height: 64px;
+      }
+      .count { font-size: 26px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .toolbar { backdrop-filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#q">跳到搜索</a>
+  <div class="wrap">
+    <header class="top">
+      <p class="kicker">X · 只收人物</p>
+      <h1>影响力 Top 100</h1>
+      <p class="lede" id="lede"></p>
+      <ul class="stats" id="stats"></ul>
+    </header>
+    <div class="toolbar">
+      <form class="search" id="search-form" role="search">
+        <label for="q">搜索姓名、账号或简介</label>
+        <input id="q" name="q" type="search" placeholder="搜索姓名、@账号或简介 · 按 / 聚焦" autocomplete="off" enterkeyhint="search" />
+        <button type="submit">搜索</button>
+      </form>
+      <div class="chips" id="chips" role="group" aria-label="按领域筛选"></div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </div>
+    <section class="lead" id="lead" aria-label="前三名"></section>
+    <section class="list" id="list" aria-label="排名列表"></section>
+    <p class="empty" id="empty" hidden><strong>没有匹配</strong><span>没有找到匹配的人物。换个词，或切回「全部」。</span></p>
+    <footer>
+      <p id="foot"></p>
+    </footer>
+  </div>
+  <script src="data.js"></script>
+  <script>
+    const { people, fetchedAt } = window.XPEOPLE;
+    const cats = ["全部", ...new Set(people.map((p) => p.category))];
+    let cat = "全部";
+    const q = document.getElementById("q");
+    const lead = document.getElementById("lead");
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+    const status = document.getElementById("status");
+
+    function wan(n) {
+      if (n >= 1e8) return (n / 1e8).toFixed(2) + "亿";
+      return (n / 1e4).toLocaleString("zh-CN", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "万";
+    }
+    function when(iso) {
+      const d = new Date(iso);
+      const p = (v) => String(v).padStart(2, "0");
+      return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日 " + p(d.getHours()) + ":" + p(d.getMinutes());
+    }
+    document.getElementById("lede").textContent =
+      "按个人账号的公开粉丝数排序。这是到达范围，不是互动率，也不含品牌、媒体机构、球队、政府办公室和组合。每位都有简介，以及 X 主页。";
+    document.getElementById("stats").innerHTML =
+      "<li><strong>" + people.length + "</strong> 人</li>" +
+      "<li>第一名 <strong>" + wan(people[0].followers) + "</strong></li>" +
+      "<li>第100名 <strong>" + wan(people[99].followers) + "</strong></li>" +
+      "<li>抓取于 <strong>" + when(fetchedAt) + "</strong></li>";
+    document.getElementById("foot").innerHTML =
+      "粉丝数为 X 公开主页上的数字，抓取于 " + when(fetchedAt) +
+      "。前排与<a href=\"https://en.wikipedia.org/wiki/List_of_most-followed_X_accounts\">维基百科最受关注 X 账号列表</a>（2026年9月14日更新）对照过。第100名与紧随其后的索努·苏德、塞雷娜·威廉姆斯只差几千粉丝，隔天可能换人。";
+
+    const chips = document.getElementById("chips");
+    cats.forEach((name) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = name === "全部" ? "全部 " + people.length : name;
+      b.setAttribute("aria-pressed", name === cat ? "true" : "false");
+      b.addEventListener("click", () => {
+        cat = name;
+        [...chips.children].forEach((el) => el.setAttribute("aria-pressed", el === b ? "true" : "false"));
+        render();
+      });
+      chips.appendChild(b);
+    });
+
+    function match(p, text) {
+      if (cat !== "全部" && p.category !== cat) return false;
+      if (!text) return true;
+      const blob = (p.nameZh + " " + p.nameEn + " " + p.xName + " " + p.handle + " " + p.bio + " " + p.category).toLowerCase();
+      return blob.includes(text);
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function face(p) {
+      const initial = (p.nameEn || p.nameZh).slice(0, 1);
+      return '<img class="avatar" alt="" width="84" height="84" src="' + esc(p.avatar) + '" data-initial="' + esc(initial) + '" referrerpolicy="no-referrer" />';
+    }
+    function links(p) {
+      const items = ['<a href="' + esc(p.x) + '" target="_blank" rel="noopener noreferrer">X 主页</a>'];
+      if (p.link) items.push('<a href="' + esc(p.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(p.link.label) + "</a>");
+      const wiki = "https://zh.wikipedia.org/w/index.php?search=" + encodeURIComponent(p.nameEn);
+      items.push('<a href="' + esc(wiki) + '" target="_blank" rel="noopener noreferrer">百科</a>');
+      return '<div class="links">' + items.join("") + "</div>";
+    }
+    function card(p, hero) {
+      const sub = "@" + p.handle + (p.nameZh === p.nameEn ? "" : " · " + p.nameEn);
+      const exact = p.followers.toLocaleString("en-US");
+      if (hero) {
+        return (
+          '<article class="hero">' +
+            '<div class="hero-top">' +
+              '<div class="rank">' + String(p.rank).padStart(2, "0") + "</div>" +
+              face(p) +
+            "</div>" +
+            '<div class="hero-body">' +
+              "<h2>" + esc(p.nameZh) + "</h2>" +
+              '<p class="sub">' + esc(sub) + "</p>" +
+              '<p class="count" title="' + exact + ' 位关注">' + wan(p.followers) + " 关注</p>" +
+              '<p class="bio">' + esc(p.bio) + "</p>" +
+              '<span class="tag">' + esc(p.category) + "</span>" +
+              links(p) +
+            "</div>" +
+          "</article>"
+        );
+      }
+      return (
+        '<article class="row">' +
+          '<div class="rank">' + String(p.rank).padStart(2, "0") + "</div>" +
+          face(p) +
+          '<div class="meta">' +
+            "<h3>" + esc(p.nameZh) + "</h3>" +
+            '<p class="sub">' + esc(sub) + "</p>" +
+            '<p class="bio">' + esc(p.bio) + "</p>" +
+            '<span class="tag">' + esc(p.category) + "</span>" +
+          "</div>" +
+          '<p class="count" title="' + exact + '">' + wan(p.followers) + "</p>" +
+          links(p) +
+        "</article>"
+      );
+    }
+    function bindAvatars(root) {
+      root.querySelectorAll("img.avatar").forEach((img) => {
+        img.addEventListener("error", () => {
+          const span = document.createElement("span");
+          span.className = "ph";
+          span.textContent = img.dataset.initial || "?";
+          img.replaceWith(span);
+        }, { once: true });
+      });
+    }
+
+    function render() {
+      const text = q.value.trim().toLowerCase();
+      const rows = people.filter((p) => match(p, text));
+      const showLead = !text && cat === "全部";
+      lead.hidden = !showLead;
+      lead.innerHTML = showLead ? rows.slice(0, 3).map((p) => card(p, true)).join("") : "";
+      const rest = showLead ? rows.slice(3) : rows;
+      list.innerHTML = rest.map((p) => card(p, false)).join("");
+      bindAvatars(lead);
+      bindAvatars(list);
+      empty.hidden = rows.length !== 0;
+      list.hidden = rows.length === 0;
+      if (rows.length === 0) {
+        status.textContent = "0 人 · 无匹配结果";
+      } else if (text || cat !== "全部") {
+        status.textContent = "显示 " + rows.length + " 人" + (cat !== "全部" ? " · " + cat : "") + (text ? " · 搜索「" + q.value.trim() + "」" : "");
+      } else {
+        status.textContent = "全部 " + people.length + " 人";
+      }
+    }
+
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      render();
+    });
+    q.addEventListener("input", render);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== q && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const tag = (document.activeElement && document.activeElement.tagName) || "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || (document.activeElement && document.activeElement.isContentEditable)) return;
+        e.preventDefault();
+        q.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>
